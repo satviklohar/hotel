@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fire & Fury — Modern Fire Kitchen</title>
+<meta name="description" content="Fire & Fury is a modern open-fire kitchen. Seasonal menu, craft cocktails, unforgettable evenings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0908;--bg2:#141010;--card:#1a1514;--line:#2c2321;
+  --cream:#f3ead8;--mute:#a79c8c;--gold:#c9a15b;--ember:#e0582c;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--bg);color:var(--cream);font:400 16px/1.7 'Inter',sans-serif;overflow-x:hidden}
+h1,h2,h3,.serif{font-family:'Playfair Display',serif;font-weight:500}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+::selection{background:var(--gold);color:#000}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+section{padding:120px 0;position:relative}
+
+/* ---------- loader ---------- */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:1000;display:grid;place-items:center;transition:transform 1s var(--ease)}
+#loader.done{transform:translateY(-100%)}
+#loader .l{font:italic 500 2.2rem 'Playfair Display';letter-spacing:.05em;text-align:center}
+#loader .l i{display:block;height:1px;background:var(--gold);margin-top:14px;transform-origin:left;animation:bar 1.4s var(--ease) forwards;transform:scaleX(0)}
+@keyframes bar{to{transform:scaleX(1)}}
+#loader .l span{display:inline-block;opacity:0;transform:translateY(20px);animation:up .8s var(--ease) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+
+/* ---------- progress + glow ---------- */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--ember),var(--gold));z-index:200}
+#glow{position:fixed;width:500px;height:500px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,#c9a15b18,transparent 65%);transform:translate(-50%,-50%);left:50%;top:50%;transition:opacity .4s}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 0;transition:all .5s var(--ease)}
+nav.stuck{padding:12px 0;background:#0b0908d9;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.logo{font:700 1.4rem 'Playfair Display';letter-spacing:.04em}
+.logo b{color:var(--ember);display:inline-block;transition:transform .6s var(--ease)}
+.logo:hover b{transform:rotate(360deg) scale(1.2)}
+.links{display:flex;gap:34px;align-items:center}
+.links a.l{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);position:relative;padding:4px 0;transition:color .3s}
+.links a.l::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.links a.l:hover,.links a.l.on{color:var(--cream)}
+.links a.l:hover::after,.links a.l.on::after{transform:scaleX(1);transform-origin:left}
+#cartBtn{position:relative;border:1px solid var(--gold);padding:8px 18px;border-radius:40px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);overflow:hidden;transition:color .4s}
+#cartBtn::before{content:"";position:absolute;inset:0;background:var(--gold);transform:translateY(100%);transition:transform .45s var(--ease);z-index:-1}
+#cartBtn{z-index:0}
+#cartBtn:hover{color:#000}#cartBtn:hover::before{transform:none}
+#cartBtn.bump{animation:bump .5s var(--ease)}
+@keyframes bump{40%{transform:scale(1.2)}}
+.burger{display:none;width:28px;height:18px;position:relative}
+.burger i{position:absolute;left:0;right:0;height:2px;background:var(--cream);transition:all .4s var(--ease)}
+.burger i:nth-child(1){top:0}.burger i:nth-child(2){top:8px}.burger i:nth-child(3){top:16px}
+.burger.x i:nth-child(1){top:8px;transform:rotate(45deg)}.burger.x i:nth-child(2){opacity:0;transform:translateX(10px)}.burger.x i:nth-child(3){top:8px;transform:rotate(-45deg)}
+
+/* ---------- buttons ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:50px;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s;isolation:isolate}
+.btn.p{background:var(--gold);color:#120d08}
+.btn.g{border:1px solid #ffffff40;color:var(--cream)}
+.btn::before{content:"";position:absolute;inset:0;background:var(--ember);transform:translateY(101%);transition:transform .5s var(--ease);z-index:-1;border-radius:inherit}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px -10px #c9a15b66}
+.btn:hover::before{transform:none}.btn.p:hover{color:#fff}
+.btn .ar{transition:transform .4s var(--ease)}.btn:hover .ar{transform:translateX(6px)}
+
+/* ---------- reveal ---------- */
+[data-r]{opacity:0;transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--d,0) * 1ms)}
+[data-r=up]{transform:translateY(50px)}
+[data-r=left]{transform:translateX(-60px)}
+[data-r=right]{transform:translateX(60px)}
+[data-r=zoom]{transform:scale(.88)}
+[data-r].in{opacity:1;transform:none}
+.eyebrow{font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.eyebrow::before{content:"";width:0;height:1px;background:var(--gold);transition:width 1.2s var(--ease) .3s}
+.eyebrow.in::before{width:46px}
+h2.t{font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.15;margin-bottom:22px}
+h2.t em{color:var(--gold);font-style:italic}
+.center{text-align:center}.center .eyebrow{justify-content:center}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;display:grid;place-items:center;text-align:center;overflow:hidden;padding:0}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,#e0582c33,transparent 60%),radial-gradient(ellipse at 50% 0%,#c9a15b14,transparent 55%)}
+#embers{position:absolute;inset:0;width:100%;height:100%}
+.hero .in-w{position:relative;z-index:2;padding:0 24px}
+.hero .eyebrow{justify-content:center;opacity:0;animation:up 1s var(--ease) 1.8s forwards}
+.hero h1{font-size:clamp(3.4rem,11vw,9rem);line-height:.95;letter-spacing:-.02em}
+.hero h1 .ln{display:block;overflow:hidden;padding:.05em 0}
+.hero h1 .ch{display:inline-block;transform:translateY(110%) rotate(8deg);animation:ch 1.1s var(--ease) forwards;animation-delay:calc(1.9s + var(--i) * 45ms)}
+@keyframes ch{to{transform:none}}
+.hero h1 .ln:last-child{font-style:italic;color:var(--gold)}
+.hero p{max-width:540px;margin:28px auto 40px;color:var(--mute);font-size:1.1rem;opacity:0;animation:up 1s var(--ease) 2.7s forwards}
+.hero .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:up 1s var(--ease) 2.9s forwards}
+.scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:up 1s 3.4s forwards}
+.scroll i{width:1px;height:50px;background:linear-gradient(var(--gold),transparent);transform-origin:top;animation:drip 2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.badge{position:absolute;right:6vw;bottom:14vh;width:130px;height:130px;z-index:2;opacity:0;animation:up 1s 3.2s forwards}
+.badge svg{width:100%;height:100%;animation:rot 18s linear infinite}
+.badge span{position:absolute;inset:0;display:grid;place-items:center;font-size:2rem}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ---------- marquee ---------- */
+.mq{border-block:1px solid var(--line);overflow:hidden;padding:22px 0;background:var(--bg2)}
+.mq div{display:flex;width:max-content;animation:mq 30s linear infinite}
+.mq:hover div{animation-play-state:paused}
+.mq span{font:italic 500 1.6rem 'Playfair Display';color:var(--mute);padding:0 28px;white-space:nowrap}
+.mq span:nth-child(even){color:var(--gold)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- about ---------- */
+.about .grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about p{color:var(--mute);margin-bottom:18px}
+.frame{position:relative;aspect-ratio:4/5;border-radius:200px 200px 16px 16px;overflow:hidden;background:linear-gradient(160deg,#2a1a12,#120c09);display:grid;place-items:center;border:1px solid var(--line)}
+.frame::before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent,#e0582c33,transparent 30%);animation:rot 8s linear infinite}
+.frame .big{position:relative;font-size:9rem;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 20px 30px #000a)}
+@keyframes float{50%{transform:translateY(-18px) rotate(4deg)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;padding-top:30px;border-top:1px solid var(--line)}
+.stats b{font:500 2.4rem 'Playfair Display';color:var(--gold);display:block;line-height:1.1}
+.stats small{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+
+/* ---------- menu ---------- */
+.menu{background:var(--bg2)}
+.tabs{display:flex;justify-content:center;gap:6px;position:relative;margin:40px auto 56px;width:fit-content;max-width:100%;padding:6px;border:1px solid var(--line);border-radius:50px;flex-wrap:wrap}
+.tabs button{position:relative;z-index:1;padding:10px 26px;border-radius:40px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);transition:color .4s}
+.tabs button.on{color:#120d08}
+#pill{position:absolute;z-index:0;top:6px;bottom:6px;border-radius:40px;background:var(--gold);transition:all .6s var(--ease)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.item{display:flex;gap:20px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;position:relative;overflow:hidden;opacity:0;animation:up .8s var(--ease) forwards;animation-delay:calc(var(--i) * 90ms);transition:transform .5s var(--ease),border-color .4s,box-shadow .5s}
+.item::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),#c9a15b22,transparent 55%);opacity:0;transition:opacity .4s}
+.item:hover{transform:translateY(-6px);border-color:#c9a15b66;box-shadow:0 24px 40px -20px #000}
+.item:hover::before{opacity:1}
+.plate{flex:none;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;font-size:2.8rem;background:radial-gradient(circle at 35% 30%,#3a2c27,#18110f);border:1px solid var(--line);position:relative;transition:transform .7s var(--ease)}
+.plate::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px dashed #c9a15b55;animation:rot 16s linear infinite}
+.item:hover .plate{transform:scale(1.1) rotate(-12deg)}
+.item h3{font-size:1.2rem;line-height:1.3}
+.item p{font-size:.85rem;color:var(--mute);line-height:1.5;margin:4px 0 10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{color:var(--gold);font:500 1.2rem 'Playfair Display'}
+.add{width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);font-size:1.2rem;line-height:1;transition:all .4s var(--ease)}
+.add:hover{background:var(--gold);color:#000;transform:rotate(90deg) scale(1.1)}
+.tag{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+
+/* ---------- signature ---------- */
+.sig{overflow:hidden;text-align:center}
+.sig .ghost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:italic 500 clamp(8rem,28vw,24rem);color:#ffffff05;white-space:nowrap;pointer-events:none;user-select:none;will-change:transform}
+.sig .dish{font-size:10rem;display:inline-block;animation:float 6s ease-in-out infinite;filter:drop-shadow(0 30px 40px #000)}
+.sig p{max-width:520px;margin:0 auto 30px;color:var(--mute)}
+.steam{display:flex;justify-content:center;gap:14px;height:50px;margin-bottom:-20px}
+.steam i{width:6px;height:40px;border-radius:6px;background:linear-gradient(transparent,#ffffff55,transparent);animation:steam 3s ease-in-out infinite;opacity:0}
+.steam i:nth-child(2){animation-delay:.6s}.steam i:nth-child(3){animation-delay:1.2s}
+@keyframes steam{0%{transform:translateY(20px) scaleY(.4);opacity:0}50%{opacity:.8}100%{transform:translateY(-30px) scaleY(1.2) translateX(8px);opacity:0}}
+
+/* ---------- testimonials ---------- */
+.tm{max-width:760px;margin:auto;text-align:center;position:relative;min-height:260px}
+.tm blockquote{position:absolute;inset:0;font:italic 500 clamp(1.3rem,3vw,1.9rem)/1.5 'Playfair Display';opacity:0;transform:translateX(40px);transition:all .9s var(--ease);pointer-events:none}
+.tm blockquote.on{opacity:1;transform:none;pointer-events:auto;position:relative}
+.tm cite{display:block;margin-top:24px;font:400 .8rem 'Inter';letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-style:normal}
+.stars{color:var(--gold);letter-spacing:6px;margin-bottom:20px}
+.dots{display:flex;gap:10px;justify-content:center;margin-top:36px}
+.dots button{width:8px;height:8px;border-radius:8px;background:var(--line);transition:all .5s var(--ease)}
+.dots button.on{width:34px;background:var(--gold)}
+
+/* ---------- reserve ---------- */
+.reserve{background:var(--bg2)}
+.res{display:grid;grid-template-columns:1fr 1.1fr;gap:70px;align-items:start}
+.info li{list-style:none;display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);color:var(--mute);transition:padding .4s var(--ease),color .3s}
+.info li:hover{padding-left:12px;color:var(--cream)}
+.info li b{color:var(--gold);font-weight:500;min-width:90px;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem;padding-top:3px}
+form{background:var(--card);border:1px solid var(--line);padding:40px;border-radius:22px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.f{position:relative}.f.full{grid-column:1/-1}
+.f input,.f select{width:100%;background:transparent;border:0;border-bottom:1px solid #ffffff30;color:var(--cream);padding:22px 0 8px;font:inherit;outline:0;border-radius:0}
+.f select option{color:#000}
+.f label{position:absolute;left:0;top:22px;color:var(--mute);pointer-events:none;transition:all .4s var(--ease);font-size:.95rem}
+.f input:focus+label,.f input:not(:placeholder-shown)+label,.f select+label{top:0;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.f::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transition:transform .6s var(--ease)}
+.f:focus-within::after{transform:scaleX(1)}
+.f.err{animation:shake .5s}.f.err::after{background:var(--ember);transform:scaleX(1)}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+form .btn{grid-column:1/-1;justify-content:center;margin-top:10px}
+.ok{position:absolute;inset:0;background:var(--card);display:grid;place-content:center;text-align:center;gap:14px;opacity:0;pointer-events:none;transition:opacity .6s}
+.ok.show{opacity:1;pointer-events:auto}
+.ok svg{width:90px;margin:auto}
+.ok circle,.ok path{fill:none;stroke:var(--gold);stroke-width:3;stroke-dasharray:300;stroke-dashoffset:300}
+.ok.show circle{animation:dash 1s var(--ease) forwards}.ok.show path{animation:dash .7s var(--ease) .7s forwards}
+@keyframes dash{to{stroke-dashoffset:0}}
+
+/* ---------- footer ---------- */
+footer{padding:70px 0 30px;border-top:1px solid var(--line)}
+.ft{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:center}
+.soc{display:flex;gap:12px}
+.soc a{width:44px;height:44px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-size:.8rem;color:var(--mute);transition:all .5s var(--ease)}
+.soc a:hover{background:var(--gold);color:#000;transform:translateY(-6px) rotate(360deg);border-color:var(--gold)}
+.copy{margin-top:40px;font-size:.78rem;color:var(--mute);text-align:center}
+
+/* ---------- cart ---------- */
+#shade{position:fixed;inset:0;background:#000a;opacity:0;pointer-events:none;transition:opacity .5s;z-index:300}
+#shade.on{opacity:1;pointer-events:auto}
+#cart{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--bg2);border-left:1px solid var(--line);z-index:400;transform:translateX(100%);transition:transform .7s var(--ease);padding:32px;display:flex;flex-direction:column}
+#cart.open{transform:none}
+#cart header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+#cart header h3{font-size:1.6rem}
+#cx{font-size:1.8rem;transition:transform .5s var(--ease)}#cx:hover{transform:rotate(180deg);color:var(--ember)}
+#list{flex:1;overflow:auto;list-style:none}
+#list li{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);animation:slidein .6s var(--ease);transition:all .5s var(--ease);overflow:hidden;max-height:100px}
+#list li.out{opacity:0;transform:translateX(60px);max-height:0;padding:0}
+@keyframes slidein{from{opacity:0;transform:translateX(40px)}}
+#list .n{flex:1;line-height:1.3}
+.q{display:flex;align-items:center;gap:10px}
+.q button{width:26px;height:26px;border:1px solid var(--line);border-radius:50%;transition:all .3s}.q button:hover{border-color:var(--gold);color:var(--gold);transform:scale(1.15)}
+.empty{text-align:center;color:var(--mute);padding:60px 0}
+.tot{display:flex;justify-content:space-between;font:500 1.5rem 'Playfair Display';padding:20px 0}
+.tot span:last-child{color:var(--gold)}
+#cart .btn{justify-content:center;width:100%}
+
+/* ---------- misc ---------- */
+#toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,120px);background:var(--cream);color:#120d08;padding:14px 28px;border-radius:50px;font-size:.9rem;z-index:600;transition:transform .6s var(--ease);box-shadow:0 20px 40px #0008}
+#toast.show{transform:translate(-50%,0)}
+#top{position:fixed;right:24px;bottom:24px;width:50px;height:50px;border-radius:50%;background:var(--gold);color:#000;z-index:150;display:grid;place-items:center;transform:scale(0) rotate(-180deg);transition:transform .6s var(--ease)}
+#top.show{transform:none}#top:hover{transform:translateY(-5px)}
+.fly{position:fixed;z-index:700;font-size:2rem;pointer-events:none}
+
+@media(max-width:900px){
+  section{padding:80px 0}
+  .about .grid,.res{grid-template-columns:1fr;gap:50px}
+  .links a.l{display:none}.burger{display:block}
+  .links.open{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;gap:28px;z-index:99}
+  .links.open a.l{display:block;font-size:1.2rem}
+  form{grid-template-columns:1fr;padding:28px}.badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="l"><span>Fire & Fury</span><i></i></div></div>
+<div id="prog"></div><div id="glow"></div>
+
+<nav id="nav"><div class="wrap">
+  <a href="#top-" class="logo">Fire <b>&</b> Fury</a>
+  <div class="links" id="links">
+    <a class="l" href="#about">Story</a><a class="l" href="#menu">Menu</a><a class="l" href="#signature">Signature</a><a class="l" href="#reviews">Reviews</a><a class="l" href="#reserve">Reserve</a>
+    <button id="cartBtn">Order · <span id="cnt">0</span></button>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+</div></nav>
+
+<header class="hero" id="top-">
+  <canvas id="embers"></canvas>
+  <div class="in-w">
+    <div class="eyebrow">Modern Open-Fire Kitchen</div>
+    <h1 id="h1"><span class="ln">Cooked by</span><span class="ln">Flame</span></h1>
+    <p>Wood, smoke and seasonal ingredients, transformed over live fire. An evening you will talk about for years.</p>
+    <div class="cta"><a href="#reserve" class="btn p">Reserve a Table <span class="ar">→</span></a><a href="#menu" class="btn g">Explore Menu</a></div>
+  </div>
+  <div class="badge"><svg viewBox="0 0 120 120"><defs><path id="c" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text font-size="11" letter-spacing="3.6" fill="#c9a15b" font-family="Inter"><textPath href="#c">· MICHELIN GUIDE · EST. 2014 · OPEN FIRE ·</textPath></text></svg><span>🔥</span></div>
+  <div class="scroll">Scroll<i></i></div>
+</header>
+
+<div class="mq"><div id="mq"></div></div>
+
+<section class="about" id="about"><div class="wrap grid">
+  <div>
+    <div class="eyebrow" data-r="up">Our Story</div>
+    <h2 class="t" data-r="up" data-d="100">Where tradition meets <em>wild flame</em></h2>
+    <p data-r="up" data-d="200">Since 2014 our kitchen has revolved around a single idea: great ingredients deserve honest fire. Every dish is touched by oak, cherry or hickory, sourced from farms within a hundred miles.</p>
+    <p data-r="up" data-d="300">Our chefs trade in precision and instinct in equal measure, creating a menu that changes with the seasons and the smoke.</p>
+    <div class="stats" data-r="up" data-d="400">
+      <div><b data-n="10">0</b><small>Years of fire</small></div>
+      <div><b data-n="48">0</b><small>Local farms</small></div>
+      <div><b data-n="120000" data-s="+">0</b><small>Guests served</small></div>
+    </div>
+  </div>
+  <div class="frame" data-r="zoom" data-d="200"><span class="big">🥩</span></div>
+</div></section>
+
+<section class="menu" id="menu"><div class="wrap">
+  <div class="center">
+    <div class="eyebrow" data-r="up">The Menu</div>
+    <h2 class="t" data-r="up" data-d="100">Seasonal, <em>seared</em>, shared</h2>
+  </div>
+  <div class="tabs" id="tabs" data-r="up" data-d="200"><span id="pill"></span></div>
+  <div class="items" id="items"></div>
+</div></section>
+
+<section class="sig" id="signature">
+  <div class="ghost" id="ghost">Signature</div>
+  <div class="wrap" style="position:relative">
+    <div class="eyebrow" data-r="up" style="justify-content:center">Chef's Signature</div>
+    <div data-r="zoom" data-d="100"><div class="steam"><i></i><i></i><i></i></div><span class="dish">🍖</span></div>
+    <h2 class="t" data-r="up" data-d="200">The 18-Hour <em>Smoked Short Rib</em></h2>
+    <p data-r="up" data-d="300">Slow-cooked over hickory, glazed with burnt honey and black garlic. Served on the bone, carved at your table.</p>
+    <div data-r="up" data-d="400"><button class="btn p" id="sigAdd">Add to Order · $46</button></div>
+  </div>
+</section>
+
+<section id="reviews"><div class="wrap">
+  <div class="center"><div class="eyebrow" data-r="up">Kind Words</div><h2 class="t" data-r="up" data-d="100">Loved by <em>guests</em> & critics</h2></div>
+  <div class="tm" data-r="up" data-d="200" id="tm">
+    <blockquote class="on"><div class="stars">★★★★★</div>“The best meal I've had this decade. The short rib alone is worth the trip.”<cite>— The Daily Table</cite></blockquote>
+    <blockquote><div class="stars">★★★★★</div>“Theatre, fire and flavour in perfect balance. Service was effortless.”<cite>— Olivia M., Guest</cite></blockquote>
+    <blockquote><div class="stars">★★★★★</div>“A new benchmark for open-fire cooking. We booked again before leaving.”<cite>— City Dining Guide</cite></blockquote>
+  </div>
+  <div class="dots" id="dots"><button class="on"></button><button></button><button></button></div>
+</div></section>
+
+<section class="reserve" id="reserve"><div class="wrap res">
+  <div>
+    <div class="eyebrow" data-r="up">Reservations</div>
+    <h2 class="t" data-r="up" data-d="100">Reserve your <em>evening</em></h2>
+    <ul class="info">
+      <li data-r="left" data-d="200"><b>Hours</b><span>Tue–Sun · 5:30 PM – 11:00 PM</span></li>
+      <li data-r="left" data-d="300"><b>Address</b><span>14 Ember Lane, Old Town</span></li>
+      <li data-r="left" data-d="400"><b>Phone</b><span>+1 (555) 014-2014</span></li>
+      <li data-r="left" data-d="500"><b>Dress</b><span>Smart casual</span></li>
+    </ul>
+  </div>
+  <form id="form" novalidate data-r="right" data-d="200">
+    <div class="f full"><input id="fn" placeholder=" " required><label for="fn">Full name</label></div>
+    <div class="f"><input id="fe" type="email" placeholder=" " required><label for="fe">Email</label></div>
+    <div class="f"><input id="fd" type="date" placeholder=" " required><label for="fd">Date</label></div>
+    <div class="f"><select id="ft"><option>6:00 PM</option><option>7:30 PM</option><option>9:00 PM</option></select><label>Time</label></div>
+    <div class="f"><select id="fg"><option>2 guests</option><option>3 guests</option><option>4 guests</option><option>5–8 guests</option></select><label>Party</label></div>
+    <button class="btn p" type="submit"><span id="sub">Confirm Reservation</span></button>
+    <div class="ok" id="ok"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="45"/><path d="M28 52l16 16 28-34"/></svg><h3 style="font-size:1.8rem">You're booked</h3><p style="color:var(--mute)" id="okt"></p></div>
+  </form>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="ft"><a class="logo" href="#top-">Fire <b>&</b> Fury</a><div class="soc"><a href="#">IG</a><a href="#">FB</a><a href="#">X</a><a href="#">YT</a></div></div>
+  <div class="copy">© 2026 Fire & Fury. All rights reserved.</div>
+</div></footer>
+
+<aside id="cart"><header><h3>Your Order</h3><button id="cx" aria-label="Close">×</button></header>
+  <ul id="list"></ul>
+  <div class="tot"><span>Total</span><span>$<span id="tot">0</span></span></div>
+  <button class="btn p" id="chk">Checkout</button>
+</aside>
+<div id="shade"></div><div id="toast"></div>
+<button id="top" aria-label="Back to top">↑</button>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const MENU={
+ Starters:[["🥗","Charred Burrata","Grilled peach, basil oil, smoked sea salt",16,"Vegetarian"],["🦐","Ember Prawns","Garlic butter, chili, grilled sourdough",19,""],["🥕","Cinder Carrots","Whipped feta, dukkah, honey",13,"Vegetarian"]],
+ Mains:[["🍖","Smoked Short Rib","18-hour hickory, burnt honey, black garlic",46,"Signature"],["🐟","Cedar Salmon","Plank-roasted, dill crème fraîche",34,""],["🍗","Fire Roast Chicken","Lemon, thyme, pan jus, crispy skin",29,""],["🥩","Dry-Aged Ribeye","Bone marrow butter, charred shallot",58,"Chef's pick"]],
+ Desserts:[["🍮","Burnt Basque Cheesecake","Caramelised top, berry compote",14,""],["🍫","Smoked Chocolate Tart","Sea salt, vanilla cream",13,""],["🍨","Campfire Sundae","Toasted marshmallow, bourbon caramel",12,"Fan favourite"]],
+ Drinks:[["🍸","Smoked Old Fashioned","Bourbon, maple, hickory smoke",16,""],["🍷","Cellar Selection","Rotating glass pour, sommelier's choice",15,""],["🍹","Ember Spritz","Blood orange, rosemary, prosecco",14,""]]
+};
+let cat="Starters",cart={};
+
+/* loader */
+addEventListener('load',()=>setTimeout(()=>$('#loader').classList.add('done'),1500));
+
+/* hero split text */
+let ci=0;$$('#h1 .ln').forEach(l=>{const t=l.textContent;l.innerHTML=[...t].map(c=>`<span class="ch" style="--i:${ci++}">${c==' '?'&nbsp;':c}</span>`).join('')});
+
+/* marquee */
+$('#mq').innerHTML=Array(2).fill(["Open Fire","Seasonal","Locally Sourced","Smoked in House","Craft Cocktails","Chef's Table"].map(x=>`<span>${x}</span><span>✦</span>`).join('')).join('').repeat(2);
+
+/* nav, progress, back-to-top, active link, parallax */
+const nav=$('#nav'),prog=$('#prog'),topb=$('#top'),ghost=$('#ghost');
+const secs=$$('section[id]');
+addEventListener('scroll',()=>{
+  const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+  prog.style.width=(y/h*100)+'%';
+  nav.classList.toggle('stuck',y>40);topb.classList.toggle('show',y>700);
+  let cur='';secs.forEach(s=>{if(y>=s.offsetTop-200)cur=s.id});
+  $$('.links a.l').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+  const r=$('#signature').getBoundingClientRect();ghost.style.transform=`translate(calc(-50% + ${r.top*.25}px),-50%)`;
+},{passive:true});
+topb.onclick=()=>scrollTo({top:0});
+$('#burger').onclick=e=>{e.currentTarget.classList.toggle('x');$('#links').classList.toggle('open')};
+$$('.links a').forEach(a=>a.addEventListener('click',()=>{$('#burger').classList.remove('x');$('#links').classList.remove('open')}));
+
+/* cursor glow */
+addEventListener('mousemove',e=>{const g=$('#glow');g.style.left=e.clientX+'px';g.style.top=e.clientY+'px'});
+
+/* scroll reveal + counters */
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.15});
+$$('[data-r],.eyebrow').forEach(el=>{el.style.setProperty('--d',el.dataset.d||0);io.observe(el)});
+const co=new IntersectionObserver(es=>es.forEach(x=>{if(!x.isIntersecting)return;co.unobserve(x.target);const el=x.target,n=+el.dataset.n,s=el.dataset.s||'',t0=performance.now();
+  (function f(t){const p=Math.min((t-t0)/1800,1),e=1-Math.pow(1-p,4);el.textContent=Math.round(n*e).toLocaleString()+s;if(p<1)requestAnimationFrame(f)})(t0)}),{threshold:.6});
+$$('[data-n]').forEach(el=>co.observe(el));
+
+/* item spotlight */
+document.addEventListener('mousemove',e=>{const c=e.target.closest('.item');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+
+/* menu */
+const pill=$('#pill');
+$('#tabs').insertAdjacentHTML('beforeend',Object.keys(MENU).map(k=>`<button data-k="${k}">${k}</button>`).join(''));
+function movePill(){const b=$('#tabs button.on');if(!b)return;pill.style.left=b.offsetLeft+'px';pill.style.width=b.offsetWidth+'px'}
+function renderMenu(){
+  $$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.k===cat));movePill();
+  $('#items').innerHTML=MENU[cat].map((m,i)=>`<div class="item" style="--i:${i}"><div class="plate">${m[0]}</div><div style="flex:1"><div class="tag">${m[4]}</div><h3>${m[1]}</h3><p>${m[2]}</p><div class="row"><span class="price">$${m[3]}</span><button class="add" data-i="${i}" aria-label="Add">+</button></div></div></div>`).join('');
+}
+$('#tabs').onclick=e=>{const k=e.target.dataset.k;if(k&&k!==cat){cat=k;renderMenu()}};
+addEventListener('resize',movePill);
+document.fonts.ready.then(renderMenu);renderMenu();
+
+/* cart */
+const money=n=>n.toLocaleString();
+function bumpBtn(){const b=$('#cartBtn');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}
+function add(m,from){
+  const k=m[1];cart[k]=cart[k]?{...cart[k],q:cart[k].q+1}:{e:m[0],n:m[1],p:m[3],q:1};
+  render();bumpBtn();toast(`${m[1]} added to your order`);
+  if(from&&!matchMedia('(prefers-reduced-motion:reduce)').matches){
+    const a=from.getBoundingClientRect(),b=$('#cartBtn').getBoundingClientRect(),f=document.createElement('div');
+    f.className='fly';f.textContent=m[0];f.style.left=a.left+'px';f.style.top=a.top+'px';document.body.append(f);
+    f.animate([{transform:'scale(1)',opacity:1},{transform:`translate(${b.left-a.left}px,${b.top-a.top}px) scale(.3) rotate(360deg)`,opacity:.2}],{duration:800,easing:'cubic-bezier(.5,0,.2,1)'}).onfinish=()=>f.remove();
+  }
+}
+function render(){
+  const v=Object.values(cart),count=v.reduce((a,x)=>a+x.q,0);
+  $('#cnt').textContent=count;$('#tot').textContent=money(v.reduce((a,x)=>a+x.p*x.q,0));
+  $('#list').innerHTML=v.length?v.map(x=>`<li data-k="${x.n}"><span style="font-size:1.8rem">${x.e}</span><div class="n">${x.n}<br><small style="color:var(--gold)">$${x.p}</small></div><div class="q"><button data-a="-">−</button><span>${x.q}</span><button data-a="+">+</button></div></li>`).join(''):'<div class="empty">Your order is empty.<br>Add something delicious.</div>';
+}
+$('#items').onclick=e=>{const b=e.target.closest('.add');if(b)add(MENU[cat][b.dataset.i],b)};
+$('#sigAdd').onclick=e=>add(MENU.Mains[0],e.currentTarget);
+$('#list').onclick=e=>{const b=e.target.closest('button[data-a]');if(!b)return;const li=b.closest('li'),k=li.dataset.k,d=b.dataset.a==='+'?1:-1;
+  if(cart[k].q+d<1){li.classList.add('out');setTimeout(()=>{delete cart[k];render()},450)}else{cart[k].q+=d;render()}};
+const open=o=>{$('#cart').classList.toggle('open',o);$('#shade').classList.toggle('on',o)};
+$('#cartBtn').onclick=()=>open(true);$('#cx').onclick=$('#shade').onclick=()=>open(false);
+$('#chk').onclick=()=>{if(!Object.keys(cart).length)return toast('Your order is empty');cart={};render();open(false);toast('Thank you — your order has been placed')};
+render();
+
+/* toast */
+function toast(t){const o=$('#toast');o.textContent=t;o.classList.add('show');clearTimeout(o.t);o.t=setTimeout(()=>o.classList.remove('show'),2600)}
+
+/* testimonials */
+let ti=0,tt;const bq=$$('#tm blockquote'),dots=$$('#dots button');
+function show(i){ti=i;bq.forEach((b,j)=>b.classList.toggle('on',j===i));dots.forEach((d,j)=>d.classList.toggle('on',j===i))}
+function auto(){clearInterval(tt);tt=setInterval(()=>show((ti+1)%bq.length),5500)}
+dots.forEach((d,i)=>d.onclick=()=>{show(i);auto()});auto();
+
+/* form */
+$('#fd').min=new Date().toISOString().split('T')[0];
+$('#form').onsubmit=e=>{e.preventDefault();let bad=false;
+  ['fn','fe','fd'].forEach(id=>{const i=$('#'+id),f=i.parentElement;f.classList.remove('err');
+    if(!i.value.trim()||(id==='fe'&&!/^\S+@\S+\.\S+$/.test(i.value))){bad=true;void f.offsetWidth;f.classList.add('err')}});
+  if(bad)return toast('Please complete the highlighted fields');
+  $('#sub').textContent='Confirming…';
+  setTimeout(()=>{$('#okt').textContent=`${$('#fg').value} · ${$('#fd').value} · ${$('#ft').value}`;$('#ok').classList.add('show');$('#sub').textContent='Confirm Reservation';
+    setTimeout(()=>{$('#ok').classList.remove('show');$('#form').reset()},4500)},1100)};
+
+/* embers */
+(function(){const c=$('#embers'),x=c.getContext('2d');let W,H,P=[];
+  const rs=()=>{W=c.width=c.offsetWidth;H=c.height=c.offsetHeight};rs();addEventListener('resize',rs);
+  const mk=()=>({x:Math.random()*W,y:H+10,r:Math.random()*2+.5,v:Math.random()*.8+.3,s:Math.random()*Math.PI*2,a:Math.random()*.7+.3});
+  for(let i=0;i<70;i++){const p=mk();p.y=Math.random()*H;P.push(p)}
+  (function loop(){x.clearRect(0,0,W,H);P.forEach((p,i)=>{p.y-=p.v;p.s+=.02;p.x+=Math.sin(p.s)*.5;p.a-=.0012;
+    if(p.y<-10||p.a<=0)P[i]=mk();
+    x.beginPath();x.fillStyle=`rgba(${224+Math.random()*20},${88+Math.random()*60},44,${p.a})`;x.shadowBlur=10;x.shadowColor='#e0582c';x.arc(p.x,p.y,p.r,0,7);x.fill()});
+    requestAnimationFrame(loop)})()})();
+</script>
+</body>
+</html>

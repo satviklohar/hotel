@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FIRE & FURY — Cooked Over Open Flame</title>
+<meta name="description" content="Fire & Fury: open-fire kitchen, dry-aged steaks, wood-fired pizza and craft cocktails. Reserve your table tonight.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;0,6..96,900;1,6..96,500;1,6..96,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <svg class="load-mark" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29"/><path d="M33 10c1 7-6 11-6 18 0 3 2 5 4 6-1-4 1-7 4-10 0 4 6 7 6 14a10 10 0 0 1-20 0c0-6 4-9 7-13 2-3 4-6 5-15z"/></svg>
+  <div class="load-num"><b id="loadNum">0</b>%</div>
+  <div class="load-logo">FIRE <b>&</b> FURY</div>
+  <i></i>
+</div>
+<div class="progress" id="progress"></div>
+
+<header class="nav" id="nav">
+  <a href="#home" class="logo"><img class="logo-mark" src="logo.svg" alt="" width="38" height="38"><span>FIRE <b>&</b> FURY</span></a>
+  <nav id="menuNav">
+    <a href="#kitchen" class="scr">Kitchen</a>
+    <a href="#gallery" class="scr">Inside</a>
+    <a href="#menu" class="scr">Menu</a>
+    <a href="#chefs" class="scr">Chefs</a>
+    <a href="#experiences" class="scr">Experiences</a>
+    <button class="cart-btn" id="cartBtn">Order <span id="cnt">0</span></button>
+    <a href="#reserve" class="btn btn-sm magnetic">Reserve</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="slides" id="heroSlides">
+    <div class="sbg active" data-img="1558030006-450675393462"></div>
+    <div class="sbg" data-img="1529193591184-b1d58069ecdd"></div>
+    <div class="sbg" data-img="1514362545857-3bc16c4c7d1b"></div>
+    <div class="sbg" data-img="1578474846511-04ba529f0b88"></div>
+  </div>
+  <div class="hero-shade"></div>
+  <canvas class="embers" id="embers"></canvas>
+
+  <div class="hero-content">
+    <p class="eyebrow"><span class="live"></span> Open tonight · 5:30 PM – late</p>
+    <h1 id="heroTitle">
+      <span class="hl" data-t="COOKED"></span>
+      <span class="hl" data-t="OVER"></span>
+      <span class="hl out" data-t="FIRE."></span>
+    </h1>
+    <p class="rotator">Taste the <span id="rot">SMOKE</span><i>|</i></p>
+    <div class="cta">
+      <a href="#reserve" class="btn magnetic">Reserve a Table</a>
+      <a href="#menu" class="btn ghost magnetic">Explore the Menu</a>
+    </div>
+  </div>
+
+  <a href="#reserve" class="badge-spin magnetic" aria-label="Reserve">
+    <svg viewBox="0 0 200 200"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+      <text><textPath href="#circ">BOOK NOW • OPEN FIRE • EST. 2014 • </textPath></text></svg>
+    <span>↗</span>
+  </a>
+
+  <div class="hero-foot">
+    <div class="dots-h" id="heroDots"><button class="active"><i></i><span>Steaks</span></button><button><i></i><span>Smokehouse</span></button><button><i></i><span>Cocktails</span></button><button><i></i><span>Dining Room</span></button></div>
+    <div class="glass-stats"><div><b>4.9★</b><span>Rating</span></div><div><b>120K</b><span>Guests</span></div><div><b>12</b><span>Years</span></div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marq">
+  <div class="mrow"><span>OPEN FIRE ✦ DRY-AGED ✦ WOOD-FIRED ✦ SMOKED ✦ SEASONAL ✦ CRAFT COCKTAILS ✦ OPEN FIRE ✦ DRY-AGED ✦ WOOD-FIRED ✦ SMOKED ✦ SEASONAL ✦ CRAFT COCKTAILS ✦ </span></div>
+  <div class="mrow rev outline"><span>EAT LOUD ✦ STAY LATE ✦ SHARE EVERYTHING ✦ EAT LOUD ✦ STAY LATE ✦ SHARE EVERYTHING ✦ EAT LOUD ✦ STAY LATE ✦ SHARE EVERYTHING ✦ EAT LOUD ✦ STAY LATE ✦ SHARE EVERYTHING ✦ </span></div>
+</div>
+
+<!-- PINNED STATEMENT -->
+<section class="statement" id="statement">
+  <div class="stick">
+    <p class="eyebrow">// Our belief</p>
+    <h2 class="words" id="words">We don't just cook dinner. We build evenings. Every ingredient, every flame, every plate — handled by people who care how it tastes.</h2>
+  </div>
+</section>
+
+<!-- KITCHEN accordion -->
+<section class="section" id="kitchen">
+  <div class="wrap">
+    <p class="eyebrow reveal">// The Kitchen</p>
+    <h2 class="big reveal">CHOOSE YOUR <span class="accent">FLAVOR</span></h2>
+  </div>
+  <div class="acc" id="acc">
+    <article class="panel active" data-img="1558030006-450675393462" data-w="1100">
+      <span class="pn">01</span><h3 class="vt">Grill</h3>
+      <div class="pc"><h3>The Grill</h3><p>Dry-aged cuts seared over oak and hickory, finished with bone-marrow butter.</p><a href="#menu" class="btn btn-sm go" data-tab="Mains">View mains</a></div>
+    </article>
+    <article class="panel" data-img="1519708227418-c8fd9a32b7a2" data-w="1100">
+      <span class="pn">02</span><h3 class="vt">Sea</h3>
+      <div class="pc"><h3>From the Sea</h3><p>Cedar-plank salmon, charred octopus and hand-rolled sushi, delivered daily.</p><a href="#menu" class="btn btn-sm go" data-tab="Starters">View starters</a></div>
+    </article>
+    <article class="panel" data-img="1565299624946-b28f40a0ae38" data-w="1100">
+      <span class="pn">03</span><h3 class="vt">Wood-Fired</h3>
+      <div class="pc"><h3>Wood-Fired</h3><p>72-hour dough baked at 480°C in our hand-built oven. Blistered, smoky, perfect.</p><a href="#menu" class="btn btn-sm go" data-tab="Fired">View wood-fired</a></div>
+    </article>
+    <article class="panel" data-img="1488477181946-6428a0291777" data-w="1100">
+      <span class="pn">04</span><h3 class="vt">Sweet</h3>
+      <div class="pc"><h3>Sweet Endings</h3><p>Pastry made every morning. Berries, cream and a little bit of smoke.</p><a href="#menu" class="btn btn-sm go" data-tab="Sweet">View desserts</a></div>
+    </article>
+    <article class="panel" data-img="1551538827-9c037cb4f32a" data-w="1100">
+      <span class="pn">05</span><h3 class="vt">Bar</h3>
+      <div class="pc"><h3>The Bar</h3><p>Smoked old-fashioneds, fresh mojitos and a cellar of 200 labels.</p><a href="#menu" class="btn btn-sm go" data-tab="Sweet">View drinks</a></div>
+    </article>
+  </div>
+</section>
+
+<!-- HORIZONTAL GALLERY -->
+<section class="hscroll" id="gallery">
+  <div class="hstick">
+    <div class="htitle"><p class="eyebrow">// Inside the room</p><h2 class="big">TAKE A <span class="accent">SEAT</span><br>AT THE TABLE →</h2></div>
+    <div class="htrack" id="htrack">
+      <figure><img loading="lazy" decoding="async" data-img="1517248135467-4c7edcad34c4" data-w="900" alt=""><figcaption><b>01</b>Main Dining Room</figcaption></figure>
+      <figure class="tall"><img loading="lazy" decoding="async" data-img="1577219491135-ce391730fb2c" data-w="800" alt=""><figcaption><b>02</b>The Pass</figcaption></figure>
+      <figure><img loading="lazy" decoding="async" data-img="1414235077428-338989a2e8c0" data-w="900" alt=""><figcaption><b>03</b>Candlelit Tables</figcaption></figure>
+      <figure class="tall"><img loading="lazy" decoding="async" data-img="1432139555190-58524dae6a55" data-w="800" alt=""><figcaption><b>04</b>Chef's Plate</figcaption></figure>
+      <figure><img loading="lazy" decoding="async" data-img="1559339352-11d035aa65de" data-w="900" alt=""><figcaption><b>05</b>Sunset Terrace</figcaption></figure>
+      <figure class="tall"><img loading="lazy" decoding="async" data-img="1504674900247-0877df9cc836" data-w="800" alt=""><figcaption><b>06</b>Sharing Feast</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-sec" data-bg="1578474846511-04ba529f0b88">
+  <div class="wrap statgrid">
+    <div class="stat reveal"><b data-count="120000">0</b><span>Guests served</span></div>
+    <div class="stat reveal" style="--d:.1s"><b data-count="48">0</b><span>Local farms</span></div>
+    <div class="stat reveal" style="--d:.2s"><b data-count="200">0</b><span>Wines & spirits</span></div>
+    <div class="stat reveal" style="--d:.3s"><b data-count="12">0</b><span>Years of fire</span></div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="section dark" id="menu">
+  <div class="wrap">
+    <p class="eyebrow reveal">// Full Menu</p>
+    <h2 class="big reveal">SEASONAL. <span class="accent">SEARED.</span> SHARED.</h2>
+    <div class="tabs reveal" id="tabs">
+      <button class="active" data-tab="Starters">Starters</button><button data-tab="Mains">Mains</button><button data-tab="Fired">Wood-Fired</button><button data-tab="Sweet">Sweet & Sips</button>
+    </div>
+    <div class="dishes" id="dishes"></div>
+  </div>
+</section>
+
+<!-- CHEFS -->
+<section class="section" id="chefs">
+  <div class="wrap">
+    <p class="eyebrow reveal">// The Team</p>
+    <h2 class="big reveal">MEET THE <span class="accent">CHEFS</span></h2>
+    <div class="tgrid">
+      <div class="tcard reveal"><img loading="lazy" decoding="async" data-img="1577219491135-ce391730fb2c" data-w="700" alt="Head Chef"><div class="tinfo"><h3>Luca Moretti</h3><p>Executive Chef</p><small>Trained in Milan · 18 yrs</small></div></div>
+      <div class="tcard reveal" style="--d:.1s"><img loading="lazy" decoding="async" data-img="1556910103-1c02745aae4d" data-w="700" alt="Sous Chef"><div class="tinfo"><h3>Maya Reyes</h3><p>Head of Smokehouse</p><small>Pitmaster · 11 yrs</small></div></div>
+      <div class="tcard reveal" style="--d:.2s"><img loading="lazy" decoding="async" data-img="1428515613728-6b4607e44363" data-w="700" alt="Kitchen team"><div class="tinfo"><h3>Daniel Park</h3><p>Sous Chef</p><small>Grill & Pass · 9 yrs</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCES (pricing) -->
+<section class="section dark" id="experiences">
+  <div class="wrap">
+    <p class="eyebrow reveal">// Experiences</p>
+    <h2 class="big reveal">PICK YOUR <span class="accent">NIGHT</span></h2>
+    <div class="billing reveal">
+      <span>Lunch</span><button class="switch on" id="billing" aria-label="Toggle lunch or dinner pricing"><i></i></button><span>Dinner <em>full experience</em></span>
+    </div>
+    <div class="cards price">
+      <div class="plan reveal">
+        <h3>The Express</h3><div class="amt">$<b data-m="39" data-y="55">55</b><small>/person</small></div>
+        <ul><li>Three-course set menu</li><li>Soft drink or house wine</li><li>Ready in 60 minutes</li></ul>
+        <a href="#reserve" class="btn ghost">Book Express</a>
+      </div>
+      <div class="plan featured reveal" style="--d:.1s">
+        <span class="badge">Most popular</span>
+        <h3>Chef's Tasting</h3><div class="amt">$<b data-m="75" data-y="95">95</b><small>/person</small></div>
+        <ul><li>Seven-course journey</li><li>Wine pairing available</li><li>Chef's counter seat</li><li>Signature smoked short rib</li></ul>
+        <a href="#reserve" class="btn">Book Tasting</a>
+      </div>
+      <div class="plan reveal" style="--d:.2s">
+        <h3>The Grand Feast</h3><div class="amt">$<b data-m="65" data-y="85">85</b><small>/person</small></div>
+        <ul><li>Shared fire-table platters</li><li>Min. 4 guests</li><li>Cocktail on arrival</li><li>Dessert board</li></ul>
+        <a href="#reserve" class="btn ghost">Book Feast</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section quote-sec">
+  <div class="wrap">
+    <p class="eyebrow reveal">// Reviews</p>
+    <h2 class="big reveal">LOVED BY <span class="accent">GUESTS</span>.<br>PRAISED BY CRITICS.</h2>
+    <div class="slider reveal" id="slider">
+      <blockquote class="slide active"><p>“The best meal I've had in a decade. The short rib alone is worth the trip.”</p><cite>— The Daily Table ★★★★★</cite></blockquote>
+      <blockquote class="slide"><p>“Fire, theatre and flavour in perfect balance. Service felt effortless.”</p><cite>— Olivia M., Guest ★★★★★</cite></blockquote>
+      <blockquote class="slide"><p>“A new benchmark for open-fire cooking. We rebooked before we left.”</p><cite>— City Dining Guide ★★★★★</cite></blockquote>
+      <div class="dots" id="dots"><button class="active"></button><button></button><button></button></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABLE FINDER -->
+<section class="section dark" id="finder">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow reveal">// Tool</p>
+      <h2 class="big reveal">FIND YOUR <span class="accent">TABLE</span></h2>
+      <p class="reveal">Tell us who's coming and we'll suggest the perfect way to experience Fire &amp; Fury.</p>
+    </div>
+    <form class="bmi reveal" id="finderForm">
+      <label>Guests: <b id="gOut" style="color:var(--text)">2</b><input type="range" id="g" min="1" max="12" value="2"></label>
+      <label>Occasion
+        <select id="occ"><option>Date night</option><option>Birthday</option><option>Business dinner</option><option>Friends night out</option><option>Celebration</option></select>
+      </label>
+      <div class="result"><div class="bar"><i id="needle"></i></div><p id="finderText">Slide to choose your party size.</p></div>
+    </form>
+  </div>
+</section>
+
+<!-- RESERVE -->
+<section class="section cta-sec" id="reserve" data-bg="1414235077428-338989a2e8c0">
+  <div class="cta-bg"></div>
+  <div class="wrap two" style="position:relative">
+    <div>
+      <p class="eyebrow reveal">// Reservations</p>
+      <h2 class="big reveal">YOUR TABLE<br>IS <span class="accent">WAITING.</span></h2>
+      <p class="reveal">Book in under a minute. We'll confirm by email and keep your fire lit.</p>
+      <p class="reveal info">📍 14 Ember Lane, Old Town<br>📞 +1 (555) 014-2014<br>✉️ hello@fireandfury.com<br>🕔 Tue–Sun · 5:30 PM – 11 PM</p>
+    </div>
+    <form class="form reveal" id="form">
+      <input type="text" placeholder="Full name" required>
+      <input type="email" placeholder="Email" required>
+      <div class="two-in"><input type="date" id="date" required><select><option>6:00 PM</option><option>7:30 PM</option><option>9:00 PM</option></select></div>
+      <select><option>2 guests</option><option>3 guests</option><option>4 guests</option><option>5–8 guests</option><option>9+ (private dining)</option></select>
+      <button class="btn magnetic" type="submit">Confirm Reservation</button>
+      <p class="ok" id="ok">✅ You're booked! A confirmation is on its way.</p>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <a href="#home" class="logo"><img class="logo-mark" src="logo.svg" alt="" width="38" height="38"><span>FIRE <b>&</b> FURY</span></a>
+  <p>© 2026 Fire & Fury. All rights reserved.</p>
+  <div class="social"><a href="#">IG</a><a href="#">FB</a><a href="#">X</a><a href="#">YT</a></div>
+</footer>
+
+<aside id="cart"><header><h3>Your Order</h3><button id="cx" aria-label="Close">×</button></header>
+  <ul id="list"></ul>
+  <div class="tot"><span>Total</span><span>$<span id="tot">0</span></span></div>
+  <button class="btn" id="chk" style="width:100%">Checkout</button>
+</aside>
+<div id="shade"></div><div id="toast"></div>
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+<script src="script.js"></script>
+</body>
+</html>
